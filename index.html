@@ -10,16 +10,17 @@
 
 <style>
 :root{
-  --primary:#c62828;
-  --bg:#f5f5f5;
+  --primary:#2b4eff;
+  --bg:#f4f6fb;
   --card:#ffffff;
   --text:#222;
+  --muted:#666;
 }
 
 *{box-sizing:border-box}
 
 body{
-  font-family:Segoe UI,Arial,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   background:var(--bg);
   margin:0;
   color:var(--text);
@@ -37,10 +38,22 @@ body{
   border-radius:14px;
   padding:20px;
   margin-bottom:18px;
-  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);
 }
 
 .center{text-align:center}
+
+h1{
+  margin:0 0 6px 0;
+  font-size:26px;
+  font-weight:700;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-bottom:15px;
+  text-align:center;
+}
 
 /* LOGIN */
 .login-box{
@@ -48,13 +61,19 @@ body{
   margin:80px auto;
 }
 
-/* INPUT */
+/* FORM */
 input{
   width:100%;
   padding:12px;
   border-radius:10px;
-  border:1px solid #ccc;
-  margin:10px 0;
+  border:1px solid #dcdcdc;
+  margin:10px 0 14px 0;
+  font-size:15px;
+}
+
+input:focus{
+  outline:none;
+  border-color:var(--primary);
 }
 
 /* BUTTON */
@@ -62,36 +81,54 @@ button{
   background:var(--primary);
   color:#fff;
   border:none;
-  padding:12px 18px;
+  padding:12px 16px;
   border-radius:10px;
+  font-size:15px;
   cursor:pointer;
+  width:100%;
+  transition:.2s;
 }
 
-.print-btn{background:#2e7d32}
+button:hover{
+  background:#1d36c9;
+}
 
 .btn-row{
   display:flex;
+  gap:10px;
   justify-content:center;
-  gap:12px;
   flex-wrap:wrap;
+  margin-top:15px;
+}
+
+.print-btn{
+  background:#00a86b;
 }
 
 /* QUIZ */
 .section-title{
-  font-size:18px;
   font-weight:700;
+  font-size:18px;
+  margin-bottom:10px;
   color:var(--primary);
 }
 
 .question{
+  margin:12px 0;
   display:flex;
   justify-content:space-between;
-  margin:12px 0;
+  align-items:center;
+  gap:10px;
+}
+
+.question span{
+  flex:1;
 }
 
 .scale{
   display:flex;
   gap:10px;
+  flex-shrink:0;
 }
 
 .scale label{
@@ -99,6 +136,7 @@ button{
   flex-direction:column;
   align-items:center;
   font-size:12px;
+  cursor:pointer;
 }
 
 .scale input{
@@ -107,45 +145,63 @@ button{
   height:22px;
   border-radius:50%;
   border:2px solid #ccc;
+  margin-bottom:4px;
 }
 
-.scale label:nth-child(1) input{border-color:#e53935}
-.scale label:nth-child(2) input{border-color:#fb8c00}
-.scale label:nth-child(3) input{border-color:#9e9e9e}
-.scale label:nth-child(4) input{border-color:#42a5f5}
-.scale label:nth-child(5) input{border-color:#1e88e5}
+.scale label:nth-child(1) input{border-color:#ff4d4d}
+.scale label:nth-child(2) input{border-color:#ff944d}
+.scale label:nth-child(3) input{border-color:#999}
+.scale label:nth-child(4) input{border-color:#4da6ff}
+.scale label:nth-child(5) input{border-color:#2b4eff}
 
-.scale label input:checked{
-  background:currentColor;
-}
+.scale label:nth-child(1) input:checked{background:#ff4d4d}
+.scale label:nth-child(2) input:checked{background:#ff944d}
+.scale label:nth-child(3) input:checked{background:#999}
+.scale label:nth-child(4) input:checked{background:#4da6ff}
+.scale label:nth-child(5) input:checked{background:#2b4eff}
 
-/* PDF */
+/* PDF AREA */
 #pdfArea{
-  max-width:210mm;
-  margin:auto;
-  padding:15mm;
+  width:210mm;
+  min-height:297mm;
+  padding:10mm;
+  box-sizing:border-box;
   background:#fff;
 }
 
 canvas{
-  max-width:170mm !important;
+  max-width:180mm !important;
+  height:auto !important;
   margin:20px auto;
   display:block;
-  page-break-inside:avoid;
 }
 
-.jurusan-block{
-  page-break-inside:avoid;
+.error{
+  color:#d60000;
+  margin-top:5px;
+  text-align:center;
 }
 
-.page-break{
-  page-break-before:always;
+/* MOBILE */
+@media(max-width:700px){
+  h1{font-size:22px}
+  .question{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .scale{margin-top:6px}
+  .btn-row{flex-direction:column}
+  #pdfArea{
+    width:100%;
+    min-height:auto;
+    padding:0;
+  }
 }
 
 /* PRINT */
 @media print{
   body *{visibility:hidden}
-  #pdfArea,#pdfArea *{visibility:visible}
+  #pdfArea, #pdfArea *{visibility:visible}
   #pdfArea{
     position:absolute;
     left:0;
@@ -159,132 +215,198 @@ canvas{
 
 <body>
 
+<!-- LOGIN -->
 <div id="loginBox" class="login-box card center">
-  <h2>🔐 Tes RIASEC</h2>
+  <h1>🔐 Akses Tes RIASEC Neutron Murangan</h1>
+  <div class="subtitle">Masukkan kode akses dan nama</div>
+
   <input type="password" id="kodeInput" placeholder="Kode akses">
   <input type="text" id="namaInput" placeholder="Nama lengkap">
+
   <button onclick="mulaiTes()">Mulai Tes</button>
-  <div id="errorBox" style="color:red"></div>
+  <div id="errorBox" class="error"></div>
 </div>
 
+<!-- APP -->
 <div id="app" style="display:none">
 
-<div id="halamanTes" class="container">
-  <h2 class="center">Tes Minat & Bakat RIASEC</h2>
-  <div id="namaPeserta" class="center"></div>
-  <div id="quiz"></div>
-  <div class="card center">
-    <button onclick="hitung()">Lihat Hasil</button>
-  </div>
-</div>
+  <div id="halamanTes" class="container">
+    <h1 class="center">🎯 Tes Minat & Bakat RIASEC Neutron Murangan</h1>
+    <div id="namaPeserta" class="subtitle"></div>
 
-<div id="halamanHasil" class="container" style="display:none"></div>
+    <div id="quiz"></div>
+
+    <div class="card center">
+      <button onclick="hitung()">Lihat Hasil Analisis</button>
+    </div>
+  </div>
+
+  <div id="halamanHasil" class="container" style="display:none"></div>
 
 </div>
 
 <script>
 var PASSWORD="neutronmurangan";
 var namaPeserta="";
+var namaPesertaEl=document.getElementById("namaPeserta");
 
+function mulaiTes(){
+  var kode=document.getElementById("kodeInput").value.trim();
+  var nama=document.getElementById("namaInput").value.trim();
+
+  if(kode!==PASSWORD){
+    errorBox.innerHTML="Kode akses salah";
+    return;
+  }
+  if(nama===""){
+    errorBox.innerHTML="Nama belum diisi";
+    return;
+  }
+
+  namaPeserta=nama;
+  loginBox.style.display="none";
+  app.style.display="block";
+  namaPesertaEl.innerHTML="Peserta: <b>"+namaPeserta+"</b>";
+}
+
+/* PERTANYAAN */
 var questions={
-R:["Saya suka alat.","Saya suka luar ruangan.","Saya suka merakit.","Saya kuat fisik.","Saya suka kerja tangan."],
-I:["Saya suka analisis.","Saya suka riset.","Saya suka sains.","Saya logis.","Saya suka data."],
-A:["Saya kreatif.","Saya suka seni.","Saya suka desain.","Saya suka menulis.","Saya imajinatif."],
-S:["Saya suka membantu.","Saya suka mengajar.","Saya peduli orang.","Saya komunikatif.","Saya suka tim."],
-E:["Saya memimpin.","Saya suka target.","Saya bisnis minded.","Saya percaya diri.","Saya tegas."],
-C:["Saya teliti.","Saya rapi.","Saya patuh aturan.","Saya suka data.","Saya suka administrasi."]
+R:["Saya senang bekerja menggunakan alat atau mesin.","Saya menikmati aktivitas di luar ruangan.","Saya tertarik memperbaiki atau merakit barang.","Saya menyukai pekerjaan yang melibatkan kekuatan fisik.","Saya merasa nyaman bekerja dengan tangan secara langsung."],
+I:["Saya senang memecahkan masalah yang kompleks.","Saya tertarik melakukan penelitian atau eksperimen.","Saya menikmati menganalisis data atau informasi.","Saya memiliki minat pada sains atau pengetahuan ilmiah.","Saya suka berpikir logis dan mendalam."],
+A:["Saya senang mengekspresikan diri melalui seni atau desain.","Saya menikmati menulis cerita atau karya kreatif.","Saya tertarik pada musik atau seni.","Saya suka menciptakan ide baru.","Saya lebih suka kebebasan daripada aturan."],
+S:["Saya senang membantu orang lain.","Saya menikmati mengajar.","Saya suka kerja tim.","Saya peduli kesejahteraan orang.","Saya suka komunikasi sosial."],
+E:["Saya senang memimpin.","Saya menikmati mempengaruhi orang.","Saya tertarik bisnis.","Saya suka ambil keputusan.","Saya suka target."],
+C:["Saya menyukai pekerjaan terstruktur.","Saya teliti data.","Saya nyaman aturan.","Saya suka jadwal.","Saya suka administrasi."]
 };
 
 var jurusanHolland={
-R:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Teknik Industri","Arsitektur","Pertanian","Perikanan","Geologi"],
-I:["Kedokteran","Farmasi","Biologi","Kimia","Fisika","Matematika","Statistika","Psikologi"],
-A:["DKV","Seni Rupa","Film","Animasi","Fotografi","Musik","Desain Produk","Interior"],
-S:["Pendidikan","PGSD","BK","Keperawatan","Kesehatan Masyarakat","Psikologi","Sosiologi","Komunikasi"],
-E:["Manajemen","Bisnis","Kewirausahaan","Marketing","Akuntansi","Hukum","Ilmu Politik","HI"],
-C:["Akuntansi","Administrasi","Perpajakan","Manajemen Perkantoran","Sistem Informasi","Perbankan","Logistik"]
+R:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Teknik Industri","Arsitektur","Kehutanan","Pertanian","Geologi","Perikanan"],
+I:["Kedokteran","Farmasi","Biologi","Kimia","Fisika","Matematika","Statistika","Psikologi","Teknik Lingkungan"],
+A:["Seni Rupa","DKV","Film","Fotografi","Animasi","Musik","Sastra","Desain Produk","Interior"],
+S:["Pendidikan","Psikologi","BK","Keperawatan","Kesmas","PGSD","PAUD","Sosiologi","Komunikasi"],
+E:["Manajemen","Bisnis","Kewirausahaan","Marketing","Akuntansi","Administrasi Bisnis","Hukum","Ilmu Politik","HI"],
+C:["Akuntansi","Administrasi","Perpajakan","Manajemen Kantor","Sistem Informasi","Perbankan","Statistika Terapan","Logistik"]
 };
 
-function mulaiTes(){
-  if(kodeInput.value!==PASSWORD){errorBox.innerHTML="Kode salah";return;}
-  namaPeserta=namaInput.value;
-  loginBox.style.display="none";
-  app.style.display="block";
-  namaPeserta.innerHTML="";
-  document.getElementById("namaPeserta").innerHTML="<b>"+namaPeserta+"</b>";
-}
-
-var quiz=document.getElementById("quiz");
-for(let k in questions){
-  let card=document.createElement("div");
+/* RENDER QUIZ */
+var quizDiv=document.getElementById("quiz");
+for(var k in questions){
+  var card=document.createElement("div");
   card.className="card";
-  card.innerHTML="<b>Tipe "+k+"</b>";
+
+  card.innerHTML="<div class='section-title'>Tipe "+k+"</div>";
+
   questions[k].forEach((q,i)=>{
-    let row=document.createElement("div");
+    var row=document.createElement("div");
     row.className="question";
     row.innerHTML="<span>"+q+"</span>";
-    let scale=document.createElement("div");
+
+    var scale=document.createElement("div");
     scale.className="scale";
-    for(let v=1;v<=5;v++){
-      scale.innerHTML+=`<label><input type="radio" name="${k}_${i}" value="${v}" ${v==3?"checked":""}>${v}</label>`;
+
+    for(var v=1;v<=5;v++){
+      var label=document.createElement("label");
+      var radio=document.createElement("input");
+
+      radio.type="radio";
+      radio.name=k+"_"+i;
+      radio.value=v;
+      if(v==3) radio.checked=true;
+
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(v));
+      scale.appendChild(label);
     }
+
     row.appendChild(scale);
     card.appendChild(row);
   });
-  quiz.appendChild(card);
+
+  quizDiv.appendChild(card);
 }
 
+/* HITUNG */
 function hitung(){
-  let skor={},arr=[];
-  for(let k in questions){
+  var skor={};
+
+  for(var k in questions){
     skor[k]=0;
     questions[k].forEach((_,i)=>{
-      skor[k]+=parseInt(document.querySelector(`input[name="${k}_${i}"]:checked`).value);
+      skor[k]+=parseInt(document.querySelector('input[name="'+k+'_'+i+'"]:checked').value);
     });
-    arr.push([k,skor[k]]);
   }
 
+  var arr=[];
+  for(var k in skor) arr.push([k,skor[k]]);
   arr.sort((a,b)=>b[1]-a[1]);
-  let top3=arr.slice(0,3);
+  var top3=arr.slice(0,3);
+
+  var kode="";
+  top3.forEach(t=>kode+=t[0]);
 
   halamanTes.style.display="none";
   halamanHasil.style.display="block";
 
-  let html=`<div class="card center"><div id="pdfArea">
-  <h2>Hasil Tes RIASEC</h2>
-  <b>Peserta:</b> ${namaPeserta}
-  <canvas id="chart"></canvas>
-
-  <div class="page-break"></div>
-  <h3>Rekomendasi Jurusan</h3>`;
+  var html="<div id='pdfArea'>";
+  html+="<h1 style='text-align:center'>🎯 Hasil Tes Minat & Bakat RIASEC Neutron Murangan</h1>";
+  html+="<div class='subtitle'>Peserta: <b>"+namaPeserta+"</b></div>";
+  html+="<br><b>Kode Holland: "+kode+"</b><br>";
+  html+="<canvas id='chartRIASEC'></canvas>";
+  html+="<br><b>Rekomendasi Jurusan:</b><br><br>";
 
   top3.forEach(t=>{
-    html+=`<div class="jurusan-block"><b>Tipe ${t[0]}</b><br>`;
-    jurusanHolland[t[0]].forEach(j=>html+=`• ${j}<br>`);
-    html+=`</div><br>`;
+    html+="<div style='margin-bottom:10px'>";
+    html+="<b>"+t[0]+"</b><br>";
+    jurusanHolland[t[0]].forEach(j=>{
+      html+="• "+j+"<br>";
+    });
+    html+="</div>";
   });
 
-  html+=`</div></div>
-  <div class="card center">
-    <div class="btn-row">
-      <button class="print-btn" onclick="window.print()">🖨 Cetak</button>
-      <button onclick="downloadPDF()">📄 Download PDF</button>
-    </div>
-  </div>`;
+  html+="</div>";
+
+  html+=`
+  <div class="btn-row">
+    <button class="print-btn" onclick="window.print()">🖨 Cetak</button>
+    <button onclick="downloadPDF()">📄 Download PDF</button>
+  </div>
+  `;
 
   halamanHasil.innerHTML=html;
 
-  new Chart(document.getElementById("chart"),{
-    type:"radar",
-    data:{labels:Object.keys(skor),datasets:[{data:Object.values(skor),fill:true}]},
-    options:{scales:{r:{beginAtZero:true}}}
-  });
+  setTimeout(()=>{
+    var ctx=document.getElementById("chartRIASEC");
+    new Chart(ctx,{
+      type:"radar",
+      data:{
+        labels:Object.keys(skor),
+        datasets:[{
+          label:"Profil RIASEC",
+          data:Object.values(skor),
+          fill:true
+        }]
+      },
+      options:{
+        scales:{r:{beginAtZero:true,ticks:{stepSize:5}}}
+      }
+    });
+  },200);
 }
 
+/* PDF */
 function downloadPDF(){
-  html2pdf().set({
-    pagebreak:{mode:['css','legacy']}
-  }).from(document.getElementById("pdfArea"))
-  .save("Hasil_RIASEC_"+namaPeserta+".pdf");
+  var element=document.getElementById("pdfArea");
+
+  setTimeout(()=>{
+    html2pdf().set({
+      margin:[10,10,10,10],
+      filename:"Hasil_RIASEC_"+namaPeserta+".pdf",
+      image:{type:'jpeg',quality:0.98},
+      html2canvas:{scale:2,scrollY:0,useCORS:true},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['css','legacy']}
+    }).from(element).save();
+  },500);
 }
 </script>
 
