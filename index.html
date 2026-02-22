@@ -24,23 +24,34 @@
 *{box-sizing:border-box}
 
 body{
-  font-family:Segoe UI,Arial;
+  font-family:Segoe UI,Arial,sans-serif;
   background:var(--bg);
   margin:0;
   color:var(--text);
 }
 
-.container{max-width:900px;margin:auto;padding:20px}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
 .card{
   background:var(--card);
   border-radius:14px;
   padding:20px;
   margin-bottom:18px;
   box-shadow:0 4px 12px rgba(0,0,0,.06);
+  page-break-inside:avoid;
 }
 
 .center{text-align:center}
-.logo-wrap{text-align:center;margin-bottom:10px}
+
+.logo-wrap{
+  text-align:center;
+  margin-bottom:12px;
+}
+
 .logo-wrap img{max-width:140px}
 
 button{
@@ -53,6 +64,8 @@ button{
   width:100%;
   font-size:15px;
 }
+
+button:hover{opacity:.9}
 
 .section-title{
   font-weight:700;
@@ -68,7 +81,10 @@ button{
   gap:10px;
 }
 
-.scale{display:flex;gap:10px}
+.scale{
+  display:flex;
+  gap:10px;
+}
 
 .scale input{
   appearance:none;
@@ -85,9 +101,7 @@ button{
 .scale input[value="4"]{border-color:#4da6ff}
 .scale input[value="5"]{border-color:#2b4eff}
 
-.scale input:checked{
-  background:currentColor;
-}
+.scale input:checked{background:currentColor}
 
 .scale input[value="1"]:checked{color:#ff4d4d}
 .scale input[value="2"]:checked{color:#ff944d}
@@ -102,7 +116,11 @@ button{
   background:#fff;
 }
 
-canvas{max-width:180mm;margin:auto}
+canvas{
+  max-width:180mm;
+  margin:20px auto;
+  display:block;
+}
 
 .btn-row{
   display:flex;
@@ -115,7 +133,10 @@ canvas{max-width:180mm;margin:auto}
 .print-btn{background:#00a86b}
 
 @media(max-width:700px){
-  .question{flex-direction:column;align-items:flex-start}
+  .question{
+    flex-direction:column;
+    align-items:flex-start;
+  }
 }
 </style>
 </head>
@@ -123,8 +144,11 @@ canvas{max-width:180mm;margin:auto}
 <body>
 
 <div class="container" id="halamanTes">
-  <div class="logo-wrap"><img src="logo2.png"></div>
-  <h1 class="center">Tes Minat & Bakat RIASEC</h1>
+  <div class="logo-wrap">
+    <img src="logo2.png">
+  </div>
+
+  <h1 class="center">🎯 Tes Minat & Bakat RIASEC</h1>
 
   <div id="quiz"></div>
 
@@ -136,6 +160,10 @@ canvas{max-width:180mm;margin:auto}
 <div class="container" id="halamanHasil" style="display:none"></div>
 
 <script>
+/* ===================== DATA ===================== */
+
+let namaPeserta = "Peserta";
+
 const questions={
 R:[
 "Saya suka bekerja menggunakan alat atau mesin",
@@ -182,13 +210,15 @@ C:[
 };
 
 const detail={
-R:{nama:"Realistic",desc:"Praktis, teknis, menyukai kerja fisik",jur:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Otomotif"]},
-I:{nama:"Investigative",desc:"Analitis, ilmiah, intelektual",jur:["Kedokteran","Farmasi","Biologi","Informatika"]},
-A:{nama:"Artistic",desc:"Kreatif, ekspresif, imajinatif",jur:["DKV","Seni Rupa","Musik","Sastra"]},
-S:{nama:"Social",desc:"Membantu, komunikatif, empatik",jur:["Pendidikan","Psikologi","Keperawatan","BK"]},
-E:{nama:"Enterprising",desc:"Persuasif, kepemimpinan, ambisius",jur:["Manajemen","Bisnis","Hukum","Marketing"]},
-C:{nama:"Conventional",desc:"Terstruktur, teliti, administratif",jur:["Akuntansi","Administrasi","Perbankan","Manajemen Data"]}
+R:{nama:"Realistic",desc:"Praktis, teknis, menyukai aktivitas fisik dan alat.",jur:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Otomotif"]},
+I:{nama:"Investigative",desc:"Analitis, logis, menyukai riset dan pemecahan masalah.",jur:["Kedokteran","Farmasi","Biologi","Informatika"]},
+A:{nama:"Artistic",desc:"Kreatif, ekspresif, menyukai kebebasan berekspresi.",jur:["DKV","Seni Rupa","Musik","Sastra"]},
+S:{nama:"Social",desc:"Membantu, empatik, komunikatif, suka interaksi sosial.",jur:["Pendidikan","Psikologi","Keperawatan","BK"]},
+E:{nama:"Enterprising",desc:"Persuasif, kepemimpinan, berorientasi target.",jur:["Manajemen","Bisnis","Hukum","Marketing"]},
+C:{nama:"Conventional",desc:"Terstruktur, teliti, administratif, sistematis.",jur:["Akuntansi","Administrasi","Perbankan","Manajemen Data"]}
 };
+
+/* ===================== RENDER ===================== */
 
 const quiz=document.getElementById("quiz");
 
@@ -210,8 +240,11 @@ for(let k in questions){
   quiz.appendChild(card);
 }
 
+/* ===================== HITUNG ===================== */
+
 function hitung(){
   let skor={};
+
   for(let k in questions){
     skor[k]=0;
     questions[k].forEach((_,i)=>{
@@ -226,7 +259,10 @@ function hitung(){
 
   halamanHasil.innerHTML=`
   <div id="pdfArea">
-    <div class="logo-wrap"><img src="logo2.png"></div>
+    <div class="logo-wrap">
+      <img src="logo2.png">
+    </div>
+
     <h1 class="center">Hasil Tes RIASEC</h1>
 
     <canvas id="chart"></canvas>
@@ -236,15 +272,18 @@ function hitung(){
         <h3>${u[0]} - ${detail[u[0]].nama}</h3>
         <p>${detail[u[0]].desc}</p>
         <b>Rekomendasi Jurusan:</b>
-        <ul>${detail[u[0]].jur.map(j=>`<li>${j}</li>`).join("")}</ul>
+        <ul>
+          ${detail[u[0]].jur.map(j=>`<li>${j}</li>`).join("")}
+        </ul>
       </div>
     `).join("")}
   </div>
 
   <div class="btn-row">
-    <button class="print-btn" onclick="window.print()">Cetak</button>
-    <button onclick="html2pdf().from(pdfArea).save('Hasil_RIASEC.pdf')">Download PDF</button>
-  </div>`;
+    <button class="print-btn" onclick="window.print()">🖨 Cetak</button>
+    <button onclick="downloadPDF()">📄 Download PDF</button>
+  </div>
+  `;
 
   new Chart(chart,{
     type:"radar",
@@ -253,11 +292,31 @@ function hitung(){
       datasets:[{
         data:Object.values(skor),
         backgroundColor:"rgba(43,78,255,.2)",
-        borderColor:"#2b4eff"
+        borderColor:"#2b4eff",
+        pointBackgroundColor:"#2b4eff"
       }]
     },
-    options:{scales:{r:{beginAtZero:true}}}
+    options:{
+      scales:{r:{beginAtZero:true}}
+    }
   });
+}
+
+/* ===================== PDF ===================== */
+
+function downloadPDF(){
+  var element=document.getElementById("pdfArea");
+
+  setTimeout(()=>{
+    html2pdf().set({
+      margin:[10,10,10,10],
+      filename:"Hasil_RIASEC_"+namaPeserta+".pdf",
+      image:{type:'jpeg',quality:0.98},
+      html2canvas:{scale:2,scrollY:0,useCORS:true},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['css','legacy']}
+    }).from(element).save();
+  },500);
 }
 </script>
 
