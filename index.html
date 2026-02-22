@@ -9,26 +9,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-:root{
-  --bg:#f4f6fb;
-  --card:#fff;
-  --text:#222;
-}
+:root{--bg:#f4f6fb;--card:#fff;--text:#222}
 *{box-sizing:border-box}
 
 body{
   font-family:Segoe UI,Arial,sans-serif;
   background:var(--bg);
-  margin:0;
-  color:var(--text);
+  margin:0;color:var(--text)
 }
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
-
+.container{max-width:900px;margin:auto;padding:20px}
 .card{
   background:var(--card);
   border-radius:14px;
@@ -37,64 +26,34 @@ body{
   box-shadow:0 4px 12px rgba(0,0,0,.06);
   page-break-inside:avoid;
 }
-
 .center{text-align:center}
 .logo-wrap{text-align:center;margin-bottom:12px}
 .logo-wrap img{max-width:140px}
 
 input[type=text]{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  margin:8px 0 16px;
-  font-size:15px;
+  width:100%;padding:12px;border-radius:10px;
+  border:1px solid #ccc;margin:8px 0 16px;font-size:15px
 }
-
 button{
-  background:#2b4eff;
-  color:#fff;
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  cursor:pointer;
-  width:100%;
-  font-size:15px;
+  background:#2b4eff;color:#fff;border:none;
+  padding:12px;border-radius:10px;cursor:pointer;width:100%
 }
-
 .print-btn{background:#00a86b}
 
-.section-title{
-  font-weight:700;
-  font-size:18px;
-  margin-bottom:10px;
-}
-
 .question{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin:12px 0;
+  display:flex;justify-content:space-between;
+  gap:10px;margin:12px 0
 }
-
 .scale{display:flex;gap:10px}
-
 .scale input{
-  appearance:none;
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  border:2px solid #aaa;
-  cursor:pointer;
+  appearance:none;width:22px;height:22px;
+  border-radius:50%;border:2px solid #aaa;cursor:pointer
 }
-
 .scale input[value="1"]{border-color:#ff4d4d}
 .scale input[value="2"]{border-color:#ff944d}
 .scale input[value="3"]{border-color:#999}
 .scale input[value="4"]{border-color:#4da6ff}
 .scale input[value="5"]{border-color:#2b4eff}
-
 .scale input:checked{background:currentColor}
 .scale input[value="1"]:checked{color:#ff4d4d}
 .scale input[value="2"]:checked{color:#ff944d}
@@ -102,56 +61,24 @@ button{
 .scale input[value="4"]:checked{color:#4da6ff}
 .scale input[value="5"]:checked{color:#2b4eff}
 
-/* ===== HASIL RESPONSIF ===== */
-.hasil-wrapper{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:100%;
-}
-
+/* ===== HASIL ===== */
+.hasil-wrapper{display:flex;flex-direction:column;align-items:center}
 #pdfArea{
-  width:100%;
-  max-width:210mm;
-  background:#fff;
-  padding:20px;
+  width:100%;max-width:210mm;
+  background:#fff;padding:20px
 }
-
-canvas{
-  max-width:100%;
-  margin:20px auto;
-  display:block;
-}
-
-.btn-row{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin:20px 0;
-}
-
-.btn-row button{max-width:260px}
+canvas{max-width:100%;margin:20px auto;display:block}
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px}
 
 @media(max-width:700px){
-  .question{flex-direction:column;align-items:flex-start}
-}
-
-@media print{
-  body{background:#fff}
-  #pdfArea{
-    width:210mm;
-    min-height:297mm;
-    padding:10mm;
-  }
-  button{display:none}
+  .question{flex-direction:column}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== HALAMAN AKSES ===== -->
+<!-- ===== AKSES ===== -->
 <div class="container" id="halamanAkses">
   <div class="card center">
     <div class="logo-wrap"><img src="logo2.png"></div>
@@ -162,20 +89,20 @@ canvas{
   </div>
 </div>
 
-<!-- ===== HALAMAN TES ===== -->
+<!-- ===== TES ===== -->
 <div class="container" id="halamanTes" style="display:none">
   <div class="logo-wrap"><img src="logo2.png"></div>
-  <h1 class="center">Tes Minat & Bakat RIASEC Neutron Murangan</h1>
+  <h2 class="center">Tes Minat & Bakat RIASEC</h2>
   <p class="center"><b>Nama:</b> <span id="namaView"></span></p>
 
   <div class="card">
-    <b>Keterangan Skala Penilaian:</b>
+    <b>Keterangan Skala:</b>
     <ul>
-      <li><b>1</b> = Sangat Tidak Sesuai</li>
-      <li><b>2</b> = Tidak Sesuai</li>
-      <li><b>3</b> = Cukup / Netral</li>
-      <li><b>4</b> = Sesuai</li>
-      <li><b>5</b> = Sangat Sesuai</li>
+      <li>1 = Sangat Tidak Sesuai</li>
+      <li>2 = Tidak Sesuai</li>
+      <li>3 = Netral</li>
+      <li>4 = Sesuai</li>
+      <li>5 = Sangat Sesuai</li>
     </ul>
   </div>
 
@@ -186,7 +113,7 @@ canvas{
   </div>
 </div>
 
-<!-- ===== HALAMAN HASIL ===== -->
+<!-- ===== HASIL ===== -->
 <div class="container" id="halamanHasil" style="display:none"></div>
 
 <script>
@@ -194,8 +121,8 @@ let namaPeserta="Peserta";
 const kodeBenar="neutronmurangan";
 
 function cekAkses(){
-  if(namaInput.value.trim()===""){alert("Nama harus diisi");return;}
-  if(kodeInput.value!==kodeBenar){alert("Kode akses salah");return;}
+  if(namaInput.value===""){alert("Nama wajib diisi");return}
+  if(kodeInput.value!==kodeBenar){alert("Kode salah");return}
   namaPeserta=namaInput.value;
   namaView.innerText=namaPeserta;
   halamanAkses.style.display="none";
@@ -203,85 +130,29 @@ function cekAkses(){
 }
 
 /* ===== DATA ===== */
-const questions={
-R:[
-"Saya senang bekerja menggunakan alat, mesin, atau peralatan teknis",
-"Saya lebih suka pekerjaan yang melibatkan aktivitas fisik daripada duduk lama",
-"Saya tertarik memperbaiki, merakit, atau membongkar suatu benda",
-"Saya menikmati pekerjaan di luar ruangan (lapangan, bengkel, kebun, proyek)",
-"Saya merasa puas jika melihat hasil kerja nyata dari tangan saya",
-"Saya lebih suka belajar dengan praktik langsung daripada teori",
-"Saya tertarik pada pekerjaan teknik atau mekanik",
-"Saya nyaman bekerja dengan benda daripada banyak berinteraksi dengan orang"
-],
-I:[
-"Saya suka memecahkan masalah yang rumit dan menantang",
-"Saya tertarik melakukan penelitian atau eksperimen",
-"Saya menikmati menganalisis data, angka, atau informasi",
-"Saya suka mencari tahu alasan di balik suatu kejadian",
-"Saya berpikir secara logis dan sistematis",
-"Saya tertarik pada mata pelajaran sains atau teknologi",
-"Saya senang membaca atau belajar hal-hal ilmiah",
-"Saya suka bekerja secara mandiri untuk berpikir dan menganalisis"
-],
-A:[
-"Saya senang mengekspresikan ide melalui seni, tulisan, atau desain",
-"Saya merasa diri saya kreatif dan imajinatif",
-"Saya tidak menyukai pekerjaan yang terlalu kaku dan banyak aturan",
-"Saya menikmati kebebasan dalam mengekspresikan diri",
-"Saya tertarik pada musik, gambar, film, atau pertunjukan",
-"Saya suka membuat sesuatu yang unik dan berbeda",
-"Saya nyaman bekerja tanpa pola yang terlalu baku",
-"Saya lebih suka ide dan kreativitas daripada angka dan data"
-],
-S:[
-"Saya senang membantu orang lain yang membutuhkan",
-"Saya merasa nyaman berinteraksi dan berkomunikasi dengan banyak orang",
-"Saya tertarik mengajar, membimbing, atau memberi arahan",
-"Saya mudah memahami perasaan orang lain",
-"Saya suka bekerja dalam tim",
-"Saya merasa puas jika bisa memberi manfaat bagi orang lain",
-"Saya tertarik pada kegiatan sosial atau kemasyarakatan",
-"Saya senang menjadi pendengar yang baik"
-],
-E:[
-"Saya percaya diri dalam menyampaikan pendapat",
-"Saya suka memimpin atau mengarahkan orang lain",
-"Saya tertarik pada dunia bisnis dan usaha",
-"Saya menikmati tantangan mencapai target atau tujuan",
-"Saya senang mempengaruhi atau meyakinkan orang lain",
-"Saya berani mengambil keputusan",
-"Saya tertarik pada kegiatan organisasi atau kepanitiaan",
-"Saya menikmati kompetisi dan tantangan"
-],
-C:[
-"Saya menyukai pekerjaan yang rapi dan teratur",
-"Saya teliti dalam mengerjakan tugas",
-"Saya nyaman mengikuti aturan dan prosedur",
-"Saya suka bekerja dengan data, angka, atau dokumen",
-"Saya menikmati pekerjaan administratif",
-"Saya terbiasa merencanakan dan mengatur pekerjaan",
-"Saya tidak keberatan mengerjakan tugas yang berulang",
-"Saya lebih suka pekerjaan yang jelas dan terstruktur"
-]
-};
+const questions={R:["Saya senang bekerja menggunakan alat, mesin, atau peralatan teknis","Saya lebih suka pekerjaan fisik","Saya tertarik memperbaiki benda","Saya menikmati pekerjaan lapangan","Saya puas melihat hasil nyata","Saya suka praktik langsung","Saya tertarik dunia teknik","Saya nyaman bekerja dengan benda"],
+I:["Saya suka memecahkan masalah","Saya tertarik penelitian","Saya suka analisis data","Saya ingin tahu sebab akibat","Saya berpikir logis","Saya suka sains","Saya suka membaca ilmiah","Saya suka bekerja mandiri"],
+A:["Saya kreatif","Saya imajinatif","Saya tidak suka aturan kaku","Saya suka kebebasan","Saya tertarik seni","Saya suka hal unik","Saya nyaman tanpa pola","Saya lebih suka ide"],
+S:["Saya suka membantu","Saya komunikatif","Saya suka mengajar","Saya empatik","Saya suka tim","Saya ingin bermanfaat","Saya tertarik sosial","Saya pendengar baik"],
+E:["Saya percaya diri","Saya suka memimpin","Saya tertarik bisnis","Saya suka target","Saya persuasif","Saya berani ambil keputusan","Saya aktif organisasi","Saya suka kompetisi"],
+C:["Saya rapi","Saya teliti","Saya patuh aturan","Saya suka data","Saya suka administrasi","Saya terencana","Saya tahan tugas rutin","Saya suka struktur"]};
 
 const detail={
-R:{nama:"Realistic",desc:"Praktis, teknis, menyukai kerja lapangan dan penggunaan alat",jur:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Teknik Industri","Teknik Otomotif","Teknik Pertambangan","Teknik Perkapalan","Teknik Penerbangan","Teknik Geologi","Agribisnis","Agroteknologi","Peternakan","Perikanan","Kehutanan","Teknologi Pangan"]},
-I:{nama:"Investigative",desc:"Analitis, logis, ilmiah, dan suka memecahkan masalah",jur:["Kedokteran","Kedokteran Gigi","Farmasi","Biologi","Fisika","Kimia","Matematika","Statistika","Ilmu Komputer","Informatika","Sistem Informasi","Teknik Biomedis","Teknologi Informasi","Ilmu Gizi","Kesehatan Masyarakat"]},
-A:{nama:"Artistic",desc:"Kreatif, ekspresif, dan menyukai seni serta kebebasan berekspresi",jur:["Desain Komunikasi Visual","Desain Interior","Desain Produk","Seni Rupa","Seni Musik","Seni Tari","Seni Teater","Fotografi","Film dan Televisi","Animasi","Sastra Indonesia","Sastra Inggris","Sastra Asing","Bahasa dan Budaya","Ilmu Komunikasi"]},
-S:{nama:"Social",desc:"Suka membantu orang lain, komunikatif, dan empatik",jur:["PGSD","Pendidikan Bahasa","Pendidikan Matematika","Pendidikan IPA","BK","Psikologi","Keperawatan","Kebidanan","Kesejahteraan Sosial","Sosiologi","Antropologi","Ilmu Komunikasi","HI","Ilmu Keperawatan","PLB"]},
-E:{nama:"Enterprising",desc:"Kepemimpinan, persuasif, dan berorientasi bisnis",jur:["Manajemen","Bisnis","Kewirausahaan","Akuntansi","Ekonomi","Administrasi Bisnis","Administrasi Negara","Ilmu Politik","Hukum","Perpajakan","Manajemen Pemasaran","Keuangan","Perdagangan Internasional","SDM"]},
-C:{nama:"Conventional",desc:"Terstruktur, teliti, dan menyukai pekerjaan administratif",jur:["Akuntansi","Administrasi Perkantoran","Administrasi Bisnis","Manajemen","Perbankan","Keuangan","Perpajakan","Sekretari","SIA","MI","Statistika Terapan","Arsip","Administrasi Publik","Logistik","Manajemen Operasi"]}
+R:{nama:"Realistic",desc:"Praktis dan teknis",jur:["Teknik Mesin","Teknik Sipil","Teknik Elektro"]},
+I:{nama:"Investigative",desc:"Analitis dan ilmiah",jur:["Kedokteran","Farmasi","Informatika"]},
+A:{nama:"Artistic",desc:"Kreatif dan ekspresif",jur:["DKV","Film","Sastra"]},
+S:{nama:"Social",desc:"Suka membantu",jur:["Psikologi","Keperawatan","PGSD"]},
+E:{nama:"Enterprising",desc:"Kepemimpinan",jur:["Manajemen","Bisnis","Hukum"]},
+C:{nama:"Conventional",desc:"Terstruktur",jur:["Akuntansi","Administrasi","Perbankan"]}
 };
 
 /* ===== RENDER ===== */
 for(let k in questions){
-  let card=document.createElement("div");
-  card.className="card";
-  card.innerHTML=`<div class="section-title">${k} - ${detail[k].nama}</div>`;
+  let c=document.createElement("div");
+  c.className="card";
+  c.innerHTML=`<b>${k} - ${detail[k].nama}</b>`;
   questions[k].forEach((q,i)=>{
-    card.innerHTML+=`
+    c.innerHTML+=`
     <div class="question">
       <span>${q}</span>
       <div class="scale">
@@ -289,7 +160,7 @@ for(let k in questions){
       </div>
     </div>`;
   });
-  quiz.appendChild(card);
+  quiz.appendChild(c);
 }
 
 /* ===== HITUNG ===== */
@@ -301,6 +172,7 @@ function hitung(){
       skor[k]+=+document.querySelector(`input[name="${k}_${i}"]:checked`).value;
     });
   }
+
   let urut=Object.entries(skor).sort((a,b)=>b[1]-a[1]);
 
   halamanTes.style.display="none";
@@ -310,14 +182,13 @@ function hitung(){
   <div class="hasil-wrapper">
     <div id="pdfArea">
       <div class="logo-wrap"><img src="logo2.png"></div>
-      <h1 class="center">Hasil Tes RIASEC</h1>
+      <h2 class="center">Hasil Tes RIASEC</h2>
       <p class="center"><b>Nama:</b> ${namaPeserta}</p>
       <canvas id="chart"></canvas>
       ${urut.slice(0,3).map(u=>`
         <div class="card">
-          <h3>${u[0]} - ${detail[u[0]].nama}</h3>
+          <b>${u[0]} - ${detail[u[0]].nama}</b>
           <p>${detail[u[0]].desc}</p>
-          <b>Rekomendasi Jurusan:</b>
           <ul>${detail[u[0]].jur.map(j=>`<li>${j}</li>`).join("")}</ul>
         </div>`).join("")}
     </div>
@@ -328,18 +199,29 @@ function hitung(){
     </div>
   </div>`;
 
-  new Chart(chart,{
-    type:"radar",
-    data:{labels:Object.keys(skor),datasets:[{data:Object.values(skor),backgroundColor:"rgba(43,78,255,.2)",borderColor:"#2b4eff"}]},
-    options:{scales:{r:{beginAtZero:true}}}
-  });
+  setTimeout(()=>{
+    new Chart(chart,{
+      type:"radar",
+      data:{labels:Object.keys(skor),datasets:[{data:Object.values(skor),backgroundColor:"rgba(43,78,255,.2)",borderColor:"#2b4eff"}]},
+      options:{responsive:true,scales:{r:{beginAtZero:true}}}
+    });
+  },200);
 }
 
+/* ===== PDF FIX (KODE ANDA) ===== */
 function downloadPDF(){
-  html2pdf().set({
-    filename:"Hasil_RIASEC_"+namaPeserta+".pdf",
-    jsPDF:{unit:"mm",format:"a4"}
-  }).from(document.getElementById("pdfArea")).save();
+  var element=document.getElementById("pdfArea");
+
+  setTimeout(()=>{
+    html2pdf().set({
+      margin:[10,10,10,10],
+      filename:"Hasil_RIASEC_"+namaPeserta+".pdf",
+      image:{type:'jpeg',quality:0.98},
+      html2canvas:{scale:2,scrollY:0,useCORS:true},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['css','legacy']}
+    }).from(element).save();
+  },500);
 }
 </script>
 
