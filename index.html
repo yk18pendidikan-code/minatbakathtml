@@ -10,12 +10,6 @@
 
 <style>
 :root{
-  --R:#ff4d4d;
-  --I:#ff944d;
-  --A:#9b59b6;
-  --S:#4da6ff;
-  --E:#2ecc71;
-  --C:#34495e;
   --bg:#f4f6fb;
   --card:#fff;
   --text:#222;
@@ -47,11 +41,7 @@ body{
 
 .center{text-align:center}
 
-.logo-wrap{
-  text-align:center;
-  margin-bottom:12px;
-}
-
+.logo-wrap{text-align:center;margin-bottom:12px}
 .logo-wrap img{max-width:140px}
 
 button{
@@ -65,7 +55,7 @@ button{
   font-size:15px;
 }
 
-button:hover{opacity:.9}
+.print-btn{background:#00a86b}
 
 .section-title{
   font-weight:700;
@@ -77,14 +67,11 @@ button:hover{opacity:.9}
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:12px 0;
   gap:10px;
+  margin:12px 0;
 }
 
-.scale{
-  display:flex;
-  gap:10px;
-}
+.scale{display:flex;gap:10px}
 
 .scale input{
   appearance:none;
@@ -102,12 +89,19 @@ button:hover{opacity:.9}
 .scale input[value="5"]{border-color:#2b4eff}
 
 .scale input:checked{background:currentColor}
-
 .scale input[value="1"]:checked{color:#ff4d4d}
 .scale input[value="2"]:checked{color:#ff944d}
 .scale input[value="3"]:checked{color:#999}
 .scale input[value="4"]:checked{color:#4da6ff}
 .scale input[value="5"]:checked{color:#2b4eff}
+
+/* ===== HASIL & PDF ===== */
+
+.hasil-wrapper{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
 
 #pdfArea{
   width:210mm;
@@ -124,31 +118,28 @@ canvas{
 
 .btn-row{
   display:flex;
-  gap:10px;
+  gap:12px;
   justify-content:center;
-  margin-top:15px;
-  flex-wrap:wrap;
+  margin-top:20px;
 }
 
-.print-btn{background:#00a86b}
+.hasil-btn{
+  width:210mm;
+}
 
 @media(max-width:700px){
-  .question{
-    flex-direction:column;
-    align-items:flex-start;
-  }
+  .question{flex-direction:column;align-items:flex-start}
+  .hasil-btn{width:100%}
 }
 </style>
 </head>
 
 <body>
 
+<!-- ===== HALAMAN TES ===== -->
 <div class="container" id="halamanTes">
-  <div class="logo-wrap">
-    <img src="logo2.png">
-  </div>
-
-  <h1 class="center">🎯 Tes Minat & Bakat RIASEC</h1>
+  <div class="logo-wrap"><img src="logo2.png"></div>
+  <h1 class="center">Tes Minat & Bakat RIASEC</h1>
 
   <div id="quiz"></div>
 
@@ -157,71 +148,33 @@ canvas{
   </div>
 </div>
 
+<!-- ===== HALAMAN HASIL ===== -->
 <div class="container" id="halamanHasil" style="display:none"></div>
 
 <script>
-/* ===================== DATA ===================== */
+let namaPeserta="Peserta";
 
-let namaPeserta = "Peserta";
-
+/* ===== DATA ===== */
 const questions={
-R:[
-"Saya suka bekerja menggunakan alat atau mesin",
-"Saya lebih senang bekerja secara fisik",
-"Saya tertarik memperbaiki atau merakit barang",
-"Saya menyukai aktivitas luar ruangan",
-"Saya nyaman bekerja dengan tangan"
-],
-I:[
-"Saya senang memecahkan masalah kompleks",
-"Saya tertarik pada eksperimen atau penelitian",
-"Saya suka menganalisis data atau angka",
-"Saya senang berpikir logis dan sistematis",
-"Saya tertarik pada sains dan teknologi"
-],
-A:[
-"Saya suka mengekspresikan ide secara kreatif",
-"Saya tertarik pada seni, musik, atau desain",
-"Saya tidak suka pekerjaan yang terlalu kaku",
-"Saya menikmati kebebasan dalam bekerja",
-"Saya suka menulis, menggambar, atau mencipta"
-],
-S:[
-"Saya senang membantu orang lain",
-"Saya tertarik mengajar atau membimbing",
-"Saya nyaman bekerja dalam tim",
-"Saya peduli pada perasaan orang lain",
-"Saya mudah berkomunikasi"
-],
-E:[
-"Saya suka memimpin dan mengatur orang",
-"Saya percaya diri menyampaikan pendapat",
-"Saya tertarik pada bisnis atau usaha",
-"Saya suka menantang diri mencapai target",
-"Saya persuasif dalam bernegosiasi"
-],
-C:[
-"Saya rapi dan teratur",
-"Saya teliti terhadap detail",
-"Saya suka bekerja dengan data atau administrasi",
-"Saya patuh pada aturan dan prosedur",
-"Saya nyaman dengan pekerjaan terstruktur"
-]
+R:["Saya suka bekerja menggunakan alat","Saya suka kerja fisik","Saya tertarik memperbaiki barang","Saya suka aktivitas luar","Saya nyaman kerja dengan tangan"],
+I:["Saya suka memecahkan masalah","Saya tertarik riset","Saya suka analisis data","Saya berpikir logis","Saya suka sains"],
+A:["Saya kreatif","Saya suka seni","Saya tidak suka kerja kaku","Saya suka kebebasan","Saya suka menulis/menggambar"],
+S:["Saya suka membantu","Saya suka mengajar","Saya nyaman kerja tim","Saya empatik","Saya komunikatif"],
+E:["Saya suka memimpin","Saya percaya diri","Saya tertarik bisnis","Saya suka target","Saya persuasif"],
+C:["Saya rapi","Saya teliti","Saya suka administrasi","Saya patuh aturan","Saya suka kerja terstruktur"]
 };
 
 const detail={
-R:{nama:"Realistic",desc:"Praktis, teknis, menyukai aktivitas fisik dan alat.",jur:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Otomotif"]},
-I:{nama:"Investigative",desc:"Analitis, logis, menyukai riset dan pemecahan masalah.",jur:["Kedokteran","Farmasi","Biologi","Informatika"]},
-A:{nama:"Artistic",desc:"Kreatif, ekspresif, menyukai kebebasan berekspresi.",jur:["DKV","Seni Rupa","Musik","Sastra"]},
-S:{nama:"Social",desc:"Membantu, empatik, komunikatif, suka interaksi sosial.",jur:["Pendidikan","Psikologi","Keperawatan","BK"]},
-E:{nama:"Enterprising",desc:"Persuasif, kepemimpinan, berorientasi target.",jur:["Manajemen","Bisnis","Hukum","Marketing"]},
-C:{nama:"Conventional",desc:"Terstruktur, teliti, administratif, sistematis.",jur:["Akuntansi","Administrasi","Perbankan","Manajemen Data"]}
+R:{nama:"Realistic",desc:"Praktis dan teknis",jur:["Teknik Mesin","Teknik Sipil","Otomotif"]},
+I:{nama:"Investigative",desc:"Analitis dan ilmiah",jur:["Kedokteran","Biologi","Informatika"]},
+A:{nama:"Artistic",desc:"Kreatif dan ekspresif",jur:["DKV","Seni Rupa","Musik"]},
+S:{nama:"Social",desc:"Membantu dan komunikatif",jur:["Pendidikan","Psikologi","Keperawatan"]},
+E:{nama:"Enterprising",desc:"Kepemimpinan dan bisnis",jur:["Manajemen","Bisnis","Hukum"]},
+C:{nama:"Conventional",desc:"Terstruktur dan administratif",jur:["Akuntansi","Administrasi","Perbankan"]}
 };
 
-/* ===================== RENDER ===================== */
-
+/* ===== RENDER ===== */
 const quiz=document.getElementById("quiz");
-
 for(let k in questions){
   let card=document.createElement("div");
   card.className="card";
@@ -240,11 +193,9 @@ for(let k in questions){
   quiz.appendChild(card);
 }
 
-/* ===================== HITUNG ===================== */
-
+/* ===== HITUNG ===== */
 function hitung(){
   let skor={};
-
   for(let k in questions){
     skor[k]=0;
     questions[k].forEach((_,i)=>{
@@ -258,32 +209,26 @@ function hitung(){
   halamanHasil.style.display="block";
 
   halamanHasil.innerHTML=`
-  <div id="pdfArea">
-    <div class="logo-wrap">
-      <img src="logo2.png">
-    </div>
+  <div class="hasil-wrapper">
+    <div id="pdfArea">
+      <div class="logo-wrap"><img src="logo2.png"></div>
+      <h1 class="center">Hasil Tes RIASEC</h1>
+      <canvas id="chart"></canvas>
 
-    <h1 class="center">Hasil Tes RIASEC</h1>
-
-    <canvas id="chart"></canvas>
-
-    ${urut.slice(0,3).map(u=>`
+      ${urut.slice(0,3).map(u=>`
       <div class="card">
         <h3>${u[0]} - ${detail[u[0]].nama}</h3>
         <p>${detail[u[0]].desc}</p>
         <b>Rekomendasi Jurusan:</b>
-        <ul>
-          ${detail[u[0]].jur.map(j=>`<li>${j}</li>`).join("")}
-        </ul>
-      </div>
-    `).join("")}
-  </div>
+        <ul>${detail[u[0]].jur.map(j=>`<li>${j}</li>`).join("")}</ul>
+      </div>`).join("")}
+    </div>
 
-  <div class="btn-row">
-    <button class="print-btn" onclick="window.print()">🖨 Cetak</button>
-    <button onclick="downloadPDF()">📄 Download PDF</button>
-  </div>
-  `;
+    <div class="btn-row hasil-btn">
+      <button class="print-btn" onclick="window.print()">🖨 Cetak</button>
+      <button onclick="downloadPDF()">📄 Download PDF</button>
+    </div>
+  </div>`;
 
   new Chart(chart,{
     type:"radar",
@@ -292,21 +237,16 @@ function hitung(){
       datasets:[{
         data:Object.values(skor),
         backgroundColor:"rgba(43,78,255,.2)",
-        borderColor:"#2b4eff",
-        pointBackgroundColor:"#2b4eff"
+        borderColor:"#2b4eff"
       }]
     },
-    options:{
-      scales:{r:{beginAtZero:true}}
-    }
+    options:{scales:{r:{beginAtZero:true}}}
   });
 }
 
-/* ===================== PDF ===================== */
-
+/* ===== PDF ===== */
 function downloadPDF(){
-  var element=document.getElementById("pdfArea");
-
+  const element=document.getElementById("pdfArea");
   setTimeout(()=>{
     html2pdf().set({
       margin:[10,10,10,10],
