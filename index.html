@@ -198,21 +198,204 @@ function cekAkses(){
 
 /* ===== DATA ===== */
 const questions = {
-  R:["Saya senang bekerja menggunakan alat, mesin, atau peralatan teknis","Saya lebih suka pekerjaan yang melibatkan aktivitas fisik","Saya tertarik memperbaiki atau merakit benda","Saya menikmati pekerjaan lapangan","Saya puas melihat hasil kerja nyata","Saya lebih suka praktik langsung","Saya tertarik pada pekerjaan teknik","Saya nyaman bekerja dengan benda"],
-  I:["Saya suka memecahkan masalah","Saya tertarik penelitian","Saya menikmati analisis data","Saya suka mencari tahu sebab akibat","Saya berpikir logis","Saya tertarik sains","Saya senang belajar ilmiah","Saya suka bekerja mandiri"],
-  A:["Saya senang seni dan desain","Saya kreatif","Saya tidak suka aturan kaku","Saya suka kebebasan berekspresi","Saya tertarik musik/film","Saya suka hal unik","Saya nyaman tanpa pola baku","Saya lebih suka ide daripada angka"],
-  S:["Saya senang membantu orang","Saya nyaman berkomunikasi","Saya tertarik mengajar","Saya empatik","Saya suka kerja tim","Saya puas memberi manfaat","Saya tertarik kegiatan sosial","Saya pendengar yang baik"],
-  E:["Saya percaya diri","Saya suka memimpin","Saya tertarik bisnis","Saya suka target","Saya senang mempengaruhi orang","Saya berani mengambil keputusan","Saya aktif organisasi","Saya suka tantangan"],
-  C:["Saya rapi dan teratur","Saya teliti","Saya patuh aturan","Saya suka data","Saya menikmati administrasi","Saya terencana","Saya tidak keberatan tugas berulang","Saya suka pekerjaan terstruktur"]
-};
+  R: [
+    "Saya senang bekerja menggunakan alat, mesin, atau peralatan teknis",
+    "Saya lebih suka pekerjaan yang melibatkan aktivitas fisik daripada duduk lama",
+    "Saya tertarik memperbaiki, merakit, atau membongkar suatu benda",
+    "Saya menikmati pekerjaan di luar ruangan (lapangan, bengkel, kebun, proyek)",
+    "Saya merasa puas jika melihat hasil kerja nyata dari tangan saya",
+    "Saya lebih suka belajar dengan praktik langsung daripada teori",
+    "Saya tertarik pada pekerjaan teknik atau mekanik",
+    "Saya nyaman bekerja dengan benda daripada banyak berinteraksi dengan orang"
+  ],
 
-const detail={
-  R:{nama:"Realistic",desc:"Praktis dan teknis",jur:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Agribisnis"]},
-  I:{nama:"Investigative",desc:"Analitis dan ilmiah",jur:["Kedokteran","Farmasi","Informatika","Statistika"]},
-  A:{nama:"Artistic",desc:"Kreatif dan ekspresif",jur:["DKV","Seni Musik","Film","Animasi"]},
-  S:{nama:"Social",desc:"Komunikatif dan empatik",jur:["Psikologi","Pendidikan","Keperawatan","BK"]},
-  E:{nama:"Enterprising",desc:"Kepemimpinan dan bisnis",jur:["Manajemen","Akuntansi","Hukum","Kewirausahaan"]},
-  C:{nama:"Conventional",desc:"Terstruktur dan teliti",jur:["Akuntansi","Administrasi","Perbankan","Manajemen"]}
+  I: [
+    "Saya suka memecahkan masalah yang rumit dan menantang",
+    "Saya tertarik melakukan penelitian atau eksperimen",
+    "Saya menikmati menganalisis data, angka, atau informasi",
+    "Saya suka mencari tahu alasan di balik suatu kejadian",
+    "Saya berpikir secara logis dan sistematis",
+    "Saya tertarik pada mata pelajaran sains atau teknologi",
+    "Saya senang membaca atau belajar hal-hal ilmiah",
+    "Saya suka bekerja secara mandiri untuk berpikir dan menganalisis"
+  ],
+
+  A: [
+    "Saya senang mengekspresikan ide melalui seni, tulisan, atau desain",
+    "Saya merasa diri saya kreatif dan imajinatif",
+    "Saya tidak menyukai pekerjaan yang terlalu kaku dan banyak aturan",
+    "Saya menikmati kebebasan dalam mengekspresikan diri",
+    "Saya tertarik pada musik, gambar, film, atau pertunjukan",
+    "Saya suka membuat sesuatu yang unik dan berbeda",
+    "Saya nyaman bekerja tanpa pola yang terlalu baku",
+    "Saya lebih suka ide dan kreativitas daripada angka dan data"
+  ],
+
+  S: [
+    "Saya senang membantu orang lain yang membutuhkan",
+    "Saya merasa nyaman berinteraksi dan berkomunikasi dengan banyak orang",
+    "Saya tertarik mengajar, membimbing, atau memberi arahan",
+    "Saya mudah memahami perasaan orang lain",
+    "Saya suka bekerja dalam tim",
+    "Saya merasa puas jika bisa memberi manfaat bagi orang lain",
+    "Saya tertarik pada kegiatan sosial atau kemasyarakatan",
+    "Saya senang menjadi pendengar yang baik"
+  ],
+
+  E: [
+    "Saya percaya diri dalam menyampaikan pendapat",
+    "Saya suka memimpin atau mengarahkan orang lain",
+    "Saya tertarik pada dunia bisnis dan usaha",
+    "Saya menikmati tantangan mencapai target atau tujuan",
+    "Saya senang mempengaruhi atau meyakinkan orang lain",
+    "Saya berani mengambil keputusan",
+    "Saya tertarik pada kegiatan organisasi atau kepanitiaan",
+    "Saya menikmati kompetisi dan tantangan"
+  ],
+
+  C: [
+    "Saya menyukai pekerjaan yang rapi dan teratur",
+    "Saya teliti dalam mengerjakan tugas",
+    "Saya nyaman mengikuti aturan dan prosedur",
+    "Saya suka bekerja dengan data, angka, atau dokumen",
+    "Saya menikmati pekerjaan administratif",
+    "Saya terbiasa merencanakan dan mengatur pekerjaan",
+    "Saya tidak keberatan mengerjakan tugas yang berulang",
+    "Saya lebih suka pekerjaan yang jelas dan terstruktur"
+  ]
+};
+const detail = {
+  R: {
+    nama: "Realistic",
+    desc: "Praktis, teknis, menyukai kerja lapangan dan penggunaan alat",
+    jur: [
+      "Teknik Mesin",
+      "Teknik Sipil",
+      "Teknik Elektro",
+      "Teknik Industri",
+      "Teknik Otomotif",
+      "Teknik Pertambangan",
+      "Teknik Perkapalan",
+      "Teknik Penerbangan",
+      "Teknik Geologi",
+      "Agribisnis",
+      "Agroteknologi",
+      "Peternakan",
+      "Perikanan",
+      "Kehutanan",
+      "Teknologi Pangan"
+    ]
+  },
+
+  I: {
+    nama: "Investigative",
+    desc: "Analitis, logis, ilmiah, dan suka memecahkan masalah",
+    jur: [
+      "Kedokteran",
+      "Kedokteran Gigi",
+      "Farmasi",
+      "Biologi",
+      "Fisika",
+      "Kimia",
+      "Matematika",
+      "Statistika",
+      "Ilmu Komputer",
+      "Informatika",
+      "Sistem Informasi",
+      "Teknik Biomedis",
+      "Teknologi Informasi",
+      "Ilmu Gizi",
+      "Kesehatan Masyarakat"
+    ]
+  },
+
+  A: {
+    nama: "Artistic",
+    desc: "Kreatif, ekspresif, dan menyukai seni serta kebebasan berekspresi",
+    jur: [
+      "Desain Komunikasi Visual (DKV)",
+      "Desain Interior",
+      "Desain Produk",
+      "Seni Rupa",
+      "Seni Musik",
+      "Seni Tari",
+      "Seni Teater",
+      "Fotografi",
+      "Film dan Televisi",
+      "Animasi",
+      "Sastra Indonesia",
+      "Sastra Inggris",
+      "Sastra Asing",
+      "Bahasa dan Budaya",
+      "Ilmu Komunikasi"
+    ]
+  },
+
+  S: {
+    nama: "Social",
+    desc: "Suka membantu orang lain, komunikatif, dan empatik",
+    jur: [
+      "Pendidikan Guru SD",
+      "Pendidikan Bahasa",
+      "Pendidikan Matematika",
+      "Pendidikan IPA",
+      "Bimbingan dan Konseling",
+      "Psikologi",
+      "Keperawatan",
+      "Kebidanan",
+      "Kesejahteraan Sosial",
+      "Sosiologi",
+      "Antropologi",
+      "Ilmu Komunikasi",
+      "Hubungan Internasional",
+      "Ilmu Keperawatan",
+      "Pendidikan Luar Biasa"
+    ]
+  },
+
+  E: {
+    nama: "Enterprising",
+    desc: "Kepemimpinan, persuasif, dan berorientasi bisnis",
+    jur: [
+      "Manajemen",
+      "Bisnis",
+      "Kewirausahaan",
+      "Akuntansi",
+      "Ekonomi Pembangunan",
+      "Ilmu Ekonomi",
+      "Administrasi Bisnis",
+      "Administrasi Negara",
+      "Ilmu Politik",
+      "Hukum",
+      "Perpajakan",
+      "Manajemen Pemasaran",
+      "Manajemen Keuangan",
+      "Perdagangan Internasional",
+      "Manajemen Sumber Daya Manusia"
+    ]
+  },
+
+  C: {
+    nama: "Conventional",
+    desc: "Terstruktur, teliti, dan menyukai pekerjaan administratif",
+    jur: [
+      "Akuntansi",
+      "Administrasi Perkantoran",
+      "Administrasi Bisnis",
+      "Manajemen",
+      "Perbankan",
+      "Keuangan dan Perbankan",
+      "Perpajakan",
+      "Sekretari",
+      "Sistem Informasi Akuntansi",
+      "Manajemen Informatika",
+      "Statistika Terapan",
+      "Arsip dan Perpustakaan",
+      "Administrasi Publik",
+      "Logistik",
+      "Manajemen Operasi"
+    ]
+  }
 };
 
 /* ===== RENDER ===== */
