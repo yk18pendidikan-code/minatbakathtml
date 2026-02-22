@@ -43,6 +43,18 @@ body{
 
 .center{text-align:center}
 
+/* LOGO */
+.logo-wrap{
+  text-align:center;
+  margin-bottom:12px;
+}
+
+.logo-wrap img{
+  max-width:140px;
+  width:100%;
+  height:auto;
+}
+
 h1{
   margin:0 0 6px 0;
   font-size:26px;
@@ -86,12 +98,9 @@ button{
   font-size:15px;
   cursor:pointer;
   width:100%;
-  transition:.2s;
 }
 
-button:hover{
-  background:#1d36c9;
-}
+button:hover{background:#1d36c9}
 
 .btn-row{
   display:flex;
@@ -101,9 +110,7 @@ button:hover{
   margin-top:15px;
 }
 
-.print-btn{
-  background:#00a86b;
-}
+.print-btn{background:#00a86b}
 
 /* QUIZ */
 .section-title{
@@ -121,14 +128,11 @@ button:hover{
   gap:10px;
 }
 
-.question span{
-  flex:1;
-}
+.question span{flex:1}
 
 .scale{
   display:flex;
   gap:10px;
-  flex-shrink:0;
 }
 
 .scale label{
@@ -154,48 +158,31 @@ button:hover{
 .scale label:nth-child(4) input{border-color:#4da6ff}
 .scale label:nth-child(5) input{border-color:#2b4eff}
 
-.scale label:nth-child(1) input:checked{background:#ff4d4d}
-.scale label:nth-child(2) input:checked{background:#ff944d}
-.scale label:nth-child(3) input:checked{background:#999}
-.scale label:nth-child(4) input:checked{background:#4da6ff}
-.scale label:nth-child(5) input:checked{background:#2b4eff}
+.scale label input:checked{background:currentColor}
 
 /* PDF AREA */
 #pdfArea{
   width:210mm;
   min-height:297mm;
   padding:10mm;
-  box-sizing:border-box;
   background:#fff;
 }
 
 canvas{
   max-width:180mm !important;
-  height:auto !important;
   margin:20px auto;
   display:block;
 }
 
 .error{
   color:#d60000;
-  margin-top:5px;
   text-align:center;
 }
 
 /* MOBILE */
 @media(max-width:700px){
   h1{font-size:22px}
-  .question{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-  .scale{margin-top:6px}
-  .btn-row{flex-direction:column}
-  #pdfArea{
-    width:100%;
-    min-height:auto;
-    padding:0;
-  }
+  .question{flex-direction:column;align-items:flex-start}
 }
 
 /* PRINT */
@@ -217,7 +204,10 @@ canvas{
 
 <!-- LOGIN -->
 <div id="loginBox" class="login-box card center">
-  <h1>🔐 Akses Tes RIASEC Neutron Murangan</h1>
+  <div class="logo-wrap">
+    <img src="https://drive.google.com/uc?export=view&id=12Q3ZaJZleKvKdA-vtGGOSjufIvbihMaf">
+  </div>
+  <h1>🔐 Akses Tes RIASEC</h1>
   <div class="subtitle">Masukkan kode akses dan nama</div>
 
   <input type="password" id="kodeInput" placeholder="Kode akses">
@@ -231,7 +221,11 @@ canvas{
 <div id="app" style="display:none">
 
   <div id="halamanTes" class="container">
-    <h1 class="center">🎯 Tes Minat & Bakat RIASEC Neutron Murangan</h1>
+    <div class="logo-wrap">
+      <img src="https://drive.google.com/uc?export=view&id=12Q3ZaJZleKvKdA-vtGGOSjufIvbihMaf">
+    </div>
+
+    <h1 class="center">🎯 Tes Minat & Bakat RIASEC</h1>
     <div id="namaPeserta" class="subtitle"></div>
 
     <div id="quiz"></div>
@@ -248,165 +242,99 @@ canvas{
 <script>
 var PASSWORD="neutronmurangan";
 var namaPeserta="";
-var namaPesertaEl=document.getElementById("namaPeserta");
 
 function mulaiTes(){
-  var kode=document.getElementById("kodeInput").value.trim();
-  var nama=document.getElementById("namaInput").value.trim();
-
-  if(kode!==PASSWORD){
+  if(kodeInput.value!==PASSWORD){
     errorBox.innerHTML="Kode akses salah";
     return;
   }
-  if(nama===""){
+  if(namaInput.value===""){
     errorBox.innerHTML="Nama belum diisi";
     return;
   }
-
-  namaPeserta=nama;
+  namaPeserta=namaInput.value;
   loginBox.style.display="none";
   app.style.display="block";
-  namaPesertaEl.innerHTML="Peserta: <b>"+namaPeserta+"</b>";
+  namaPeserta.innerHTML="Peserta: <b>"+namaPeserta+"</b>";
 }
 
-/* PERTANYAAN */
+/* DATA */
 var questions={
-R:["Saya senang bekerja menggunakan alat atau mesin.","Saya menikmati aktivitas di luar ruangan.","Saya tertarik memperbaiki atau merakit barang.","Saya menyukai pekerjaan yang melibatkan kekuatan fisik.","Saya merasa nyaman bekerja dengan tangan secara langsung."],
-I:["Saya senang memecahkan masalah yang kompleks.","Saya tertarik melakukan penelitian atau eksperimen.","Saya menikmati menganalisis data atau informasi.","Saya memiliki minat pada sains atau pengetahuan ilmiah.","Saya suka berpikir logis dan mendalam."],
-A:["Saya senang mengekspresikan diri melalui seni atau desain.","Saya menikmati menulis cerita atau karya kreatif.","Saya tertarik pada musik atau seni.","Saya suka menciptakan ide baru.","Saya lebih suka kebebasan daripada aturan."],
-S:["Saya senang membantu orang lain.","Saya menikmati mengajar.","Saya suka kerja tim.","Saya peduli kesejahteraan orang.","Saya suka komunikasi sosial."],
-E:["Saya senang memimpin.","Saya menikmati mempengaruhi orang.","Saya tertarik bisnis.","Saya suka ambil keputusan.","Saya suka target."],
-C:["Saya menyukai pekerjaan terstruktur.","Saya teliti data.","Saya nyaman aturan.","Saya suka jadwal.","Saya suka administrasi."]
+R:["Saya senang bekerja menggunakan alat atau mesin.","Saya menikmati aktivitas di luar ruangan.","Saya tertarik memperbaiki barang.","Saya suka pekerjaan fisik.","Saya nyaman bekerja dengan tangan."],
+I:["Saya senang memecahkan masalah.","Saya tertarik penelitian.","Saya suka menganalisis data.","Saya suka sains.","Saya berpikir logis."],
+A:["Saya senang seni.","Saya suka menulis.","Saya tertarik musik.","Saya suka ide baru.","Saya suka kebebasan."],
+S:["Saya senang membantu.","Saya suka mengajar.","Saya suka kerja tim.","Saya peduli orang lain.","Saya komunikatif."],
+E:["Saya suka memimpin.","Saya persuasif.","Saya tertarik bisnis.","Saya suka target.","Saya percaya diri."],
+C:["Saya rapi.","Saya suka data.","Saya patuh aturan.","Saya terjadwal.","Saya teliti."]
 };
 
 var jurusanHolland={
-R:["Teknik Mesin","Teknik Sipil","Teknik Elektro","Teknik Industri","Arsitektur","Kehutanan","Pertanian","Geologi","Perikanan"],
-I:["Kedokteran","Farmasi","Biologi","Kimia","Fisika","Matematika","Statistika","Psikologi","Teknik Lingkungan"],
-A:["Seni Rupa","DKV","Film","Fotografi","Animasi","Musik","Sastra","Desain Produk","Interior"],
-S:["Pendidikan","Psikologi","BK","Keperawatan","Kesmas","PGSD","PAUD","Sosiologi","Komunikasi"],
-E:["Manajemen","Bisnis","Kewirausahaan","Marketing","Akuntansi","Administrasi Bisnis","Hukum","Ilmu Politik","HI"],
-C:["Akuntansi","Administrasi","Perpajakan","Manajemen Kantor","Sistem Informasi","Perbankan","Statistika Terapan","Logistik"]
+R:["Teknik Mesin","Teknik Sipil","Teknik Elektro"],
+I:["Kedokteran","Farmasi","Biologi"],
+A:["DKV","Seni Rupa","Musik"],
+S:["Pendidikan","Psikologi","Keperawatan"],
+E:["Manajemen","Bisnis","Hukum"],
+C:["Akuntansi","Administrasi","Perbankan"]
 };
 
-/* RENDER QUIZ */
-var quizDiv=document.getElementById("quiz");
-for(var k in questions){
-  var card=document.createElement("div");
+/* RENDER */
+for(let k in questions){
+  let card=document.createElement("div");
   card.className="card";
-
   card.innerHTML="<div class='section-title'>Tipe "+k+"</div>";
-
   questions[k].forEach((q,i)=>{
-    var row=document.createElement("div");
-    row.className="question";
-    row.innerHTML="<span>"+q+"</span>";
-
-    var scale=document.createElement("div");
-    scale.className="scale";
-
-    for(var v=1;v<=5;v++){
-      var label=document.createElement("label");
-      var radio=document.createElement("input");
-
-      radio.type="radio";
-      radio.name=k+"_"+i;
-      radio.value=v;
-      if(v==3) radio.checked=true;
-
-      label.appendChild(radio);
-      label.appendChild(document.createTextNode(v));
-      scale.appendChild(label);
-    }
-
-    row.appendChild(scale);
-    card.appendChild(row);
+    card.innerHTML+=`
+    <div class="question">
+      <span>${q}</span>
+      <div class="scale">
+        ${[1,2,3,4,5].map(v=>`
+          <label><input type="radio" name="${k}_${i}" value="${v}" ${v==3?"checked":""}>${v}</label>
+        `).join("")}
+      </div>
+    </div>`;
   });
-
-  quizDiv.appendChild(card);
+  quiz.appendChild(card);
 }
 
 /* HITUNG */
 function hitung(){
-  var skor={};
-
-  for(var k in questions){
+  let skor={};
+  for(let k in questions){
     skor[k]=0;
     questions[k].forEach((_,i)=>{
-      skor[k]+=parseInt(document.querySelector('input[name="'+k+'_'+i+'"]:checked').value);
+      skor[k]+=+document.querySelector(`input[name="${k}_${i}"]:checked`).value;
     });
   }
 
-  var arr=[];
-  for(var k in skor) arr.push([k,skor[k]]);
-  arr.sort((a,b)=>b[1]-a[1]);
-  var top3=arr.slice(0,3);
-
-  var kode="";
-  top3.forEach(t=>kode+=t[0]);
+  let urut=Object.entries(skor).sort((a,b)=>b[1]-a[1]).slice(0,3);
 
   halamanTes.style.display="none";
   halamanHasil.style.display="block";
 
-  var html="<div id='pdfArea'>";
-  html+="<h1 style='text-align:center'>🎯 Hasil Tes Minat & Bakat RIASEC Neutron Murangan</h1>";
-  html+="<div class='subtitle'>Peserta: <b>"+namaPeserta+"</b></div>";
-  html+="<br><b>Kode Holland: "+kode+"</b><br>";
-  html+="<canvas id='chartRIASEC'></canvas>";
-  html+="<br><b>Rekomendasi Jurusan:</b><br><br>";
-
-  top3.forEach(t=>{
-    html+="<div style='margin-bottom:10px'>";
-    html+="<b>"+t[0]+"</b><br>";
-    jurusanHolland[t[0]].forEach(j=>{
-      html+="• "+j+"<br>";
-    });
-    html+="</div>";
-  });
-
-  html+="</div>";
-
-  html+=`
+  halamanHasil.innerHTML=`
+  <div id="pdfArea">
+    <div class="logo-wrap">
+      <img src="https://drive.google.com/uc?export=view&id=12Q3ZaJZleKvKdA-vtGGOSjufIvbihMaf">
+    </div>
+    <h1 class="center">Hasil Tes RIASEC</h1>
+    <div class="subtitle">Peserta: <b>${namaPeserta}</b></div>
+    <canvas id="chartRIASEC"></canvas>
+  </div>
   <div class="btn-row">
     <button class="print-btn" onclick="window.print()">🖨 Cetak</button>
     <button onclick="downloadPDF()">📄 Download PDF</button>
-  </div>
-  `;
+  </div>`;
 
-  halamanHasil.innerHTML=html;
-
-  setTimeout(()=>{
-    var ctx=document.getElementById("chartRIASEC");
-    new Chart(ctx,{
-      type:"radar",
-      data:{
-        labels:Object.keys(skor),
-        datasets:[{
-          label:"Profil RIASEC",
-          data:Object.values(skor),
-          fill:true
-        }]
-      },
-      options:{
-        scales:{r:{beginAtZero:true,ticks:{stepSize:5}}}
-      }
-    });
-  },200);
+  new Chart(chartRIASEC,{
+    type:"radar",
+    data:{labels:Object.keys(skor),datasets:[{data:Object.values(skor),fill:true}]},
+    options:{scales:{r:{beginAtZero:true}}}
+  });
 }
 
 /* PDF */
 function downloadPDF(){
-  var element=document.getElementById("pdfArea");
-
-  setTimeout(()=>{
-    html2pdf().set({
-      margin:[10,10,10,10],
-      filename:"Hasil_RIASEC_"+namaPeserta+".pdf",
-      image:{type:'jpeg',quality:0.98},
-      html2canvas:{scale:2,scrollY:0,useCORS:true},
-      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
-      pagebreak:{mode:['css','legacy']}
-    }).from(element).save();
-  },500);
+  html2pdf().from(pdfArea).save("Hasil_RIASEC_"+namaPeserta+".pdf");
 }
 </script>
 
