@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tes Minat Bakat RIASEC</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+:root{
+  --primary:#c62828;
+  --secondary:#9e9e9e;
+  --bg:#f5f5f5;
+  --card:#ffffff;
+  --text:#222;
+}
+
+*{box-sizing:border-box}
+
+body{
+  font-family:Segoe UI,Arial,sans-serif;
+  background:var(--bg);
+  margin:0;
+  color:var(--text);
+}
+
+/* LAYOUT */
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px 16px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.center{text-align:center}
+
+/* LOGIN */
+.login-box{
+  max-width:420px;
+  margin:80px auto;
+}
+
+/* FORM */
+input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin:10px 0;
+  font-size:15px;
+}
+
+/* BUTTON */
+button{
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  padding:12px 18px;
+  border-radius:10px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+button:hover{opacity:.9}
+
+.print-btn{background:#2e7d32}
+
+.btn-row{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
+
+/* QUIZ */
+.section-title{
+  font-weight:700;
+  font-size:18px;
+  margin-bottom:10px;
+  color:var(--primary);
+}
+
+.question{
+  margin:12px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.scale{
+  display:flex;
+  gap:8px;
+}
+
+.scale label{
+  font-size:12px;
+  text-align:center;
+}
+
+.scale input{
+  width:20px;
+  height:20px;
+}
+
+/* HASIL */
+#halamanHasil{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+#pdfArea{
+  width:210mm;
+  background:#fff;
+  padding:15mm;
+  margin:auto;
+}
+
+canvas{
+  max-width:170mm !important;
+  margin:20px auto;
+  display:block;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+  #pdfArea{
+    width:100%;
+    padding:10px;
+  }
+  .question{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
+/* PRINT */
+@media print{
+  body *{visibility:hidden}
+  #pdfArea, #pdfArea *{visibility:visible}
+  #pdfArea{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+  }
+  button{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox" class="login-box card center">
+  <h2>🔐 Tes RIASEC Neutron Murangan</h2>
+  <input type="password" id="kodeInput" placeholder="Kode akses">
+  <input type="text" id="namaInput" placeholder="Nama lengkap">
+  <button onclick="mulaiTes()">Mulai Tes</button>
+  <div id="errorBox" style="color:red;margin-top:10px"></div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+
+  <div id="halamanTes" class="container">
+    <h2 class="center">🎯 Tes Minat & Bakat RIASEC</h2>
+    <div id="namaPeserta" class="center"></div>
+    <div id="quiz"></div>
+    <div class="card center">
+      <button onclick="hitung()">Lihat Hasil</button>
+    </div>
+  </div>
+
+  <div id="halamanHasil" class="container" style="display:none"></div>
+
+</div>
+
+<script>
+var PASSWORD="neutronmurangan";
+var namaPeserta="";
+
+function mulaiTes(){
+  if(kodeInput.value!==PASSWORD){
+    errorBox.innerHTML="Kode akses salah";
+    return;
+  }
+  if(namaInput.value===""){
+    errorBox.innerHTML="Nama belum diisi";
+    return;
+  }
+  namaPeserta=namaInput.value;
+  loginBox.style.display="none";
+  app.style.display="block";
+  namaPeserta.innerHTML="";
+  document.getElementById("namaPeserta").innerHTML="<b>Peserta: "+namaPeserta+"</b>";
+}
+
+var questions={
+R:["Saya senang bekerja dengan alat.","Saya suka aktivitas luar ruangan.","Saya senang merakit barang."],
+I:["Saya suka memecahkan masalah.","Saya tertarik sains.","Saya suka analisis data."],
+A:["Saya suka seni.","Saya kreatif.","Saya suka desain."],
+S:["Saya suka membantu orang.","Saya suka mengajar.","Saya senang kerja tim."],
+E:["Saya suka memimpin.","Saya suka target.","Saya tertarik bisnis."],
+C:["Saya teliti.","Saya suka aturan.","Saya rapi administrasi."]
+};
+
+var quiz=document.getElementById("quiz");
+for(let k in questions){
+  let card=document.createElement("div");
+  card.className="card";
+  card.innerHTML="<div class='section-title'>Tipe "+k+"</div>";
+  questions[k].forEach((q,i)=>{
+    let row=document.createElement("div");
+    row.className="question";
+    row.innerHTML="<span>"+q+"</span>";
+    let scale=document.createElement("div");
+    scale.className="scale";
+    for(let v=1;v<=5;v++){
+      scale.innerHTML+=`<label><input type="radio" name="${k}_${i}" value="${v}" ${v==3?"checked":""}>${v}</label>`;
+    }
+    row.appendChild(scale);
+    card.appendChild(row);
+  });
+  quiz.appendChild(card);
+}
+
+function hitung(){
+  let skor={};
+  for(let k in questions){
+    skor[k]=0;
+    questions[k].forEach((_,i)=>{
+      skor[k]+=parseInt(document.querySelector(`input[name="${k}_${i}"]:checked`).value);
+    });
+  }
+
+  halamanTes.style.display="none";
+  halamanHasil.style.display="block";
+
+  halamanHasil.innerHTML=`
+  <div class="card center">
+    <div id="pdfArea">
+      <h2>🎯 Hasil Tes RIASEC</h2>
+      <p><b>Peserta:</b> ${namaPeserta}</p>
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+
+  <div class="card center">
+    <div class="btn-row">
+      <button class="print-btn" onclick="window.print()">🖨 Cetak</button>
+      <button onclick="downloadPDF()">📄 Download PDF</button>
+    </div>
+  </div>
+  `;
+
+  new Chart(document.getElementById("chart"),{
+    type:"radar",
+    data:{labels:Object.keys(skor),datasets:[{data:Object.values(skor)}]},
+    options:{scales:{r:{beginAtZero:true}}}
+  });
+}
+
+function downloadPDF(){
+  html2pdf().from(document.getElementById("pdfArea")).save("Hasil_RIASEC_"+namaPeserta+".pdf");
+}
+</script>
+
+</body>
+</html>
