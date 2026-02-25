@@ -11,44 +11,18 @@
 <style>
 :root{--bg:#f4f6fb;--card:#fff;--text:#222}
 *{box-sizing:border-box}
-
-body{
-  font-family:Segoe UI,Arial,sans-serif;
-  background:var(--bg);
-  margin:0;color:var(--text)
-}
+body{font-family:Segoe UI,Arial,sans-serif;background:var(--bg);margin:0;color:var(--text)}
 .container{max-width:900px;margin:auto;padding:20px}
-.card{
-  background:var(--card);
-  border-radius:14px;
-  padding:20px;
-  margin-bottom:18px;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);
-  page-break-inside:avoid;
-}
+.card{background:var(--card);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 4px 12px rgba(0,0,0,.06);page-break-inside:avoid}
 .center{text-align:center}
 .logo-wrap{text-align:center;margin-bottom:12px}
 .logo-wrap img{max-width:140px}
-
-input[type=text]{
-  width:100%;padding:12px;border-radius:10px;
-  border:1px solid #ccc;margin:8px 0 16px;font-size:15px
-}
-button{
-  background:#2b4eff;color:#fff;border:none;
-  padding:12px;border-radius:10px;cursor:pointer;width:100%
-}
+input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid #ccc;margin:8px 0 16px;font-size:15px}
+button{background:#2b4eff;color:#fff;border:none;padding:12px;border-radius:10px;cursor:pointer;width:100%}
 .print-btn{background:#00a86b}
-
-.question{
-  display:flex;justify-content:space-between;
-  gap:10px;margin:12px 0
-}
+.question{display:flex;justify-content:space-between;gap:10px;margin:12px 0}
 .scale{display:flex;gap:10px}
-.scale input{
-  appearance:none;width:22px;height:22px;
-  border-radius:50%;border:2px solid #aaa;cursor:pointer
-}
+.scale input{appearance:none;width:22px;height:22px;border-radius:50%;border:2px solid #aaa;cursor:pointer}
 .scale input[value="1"]{border-color:#ff4d4d}
 .scale input[value="2"]{border-color:#ff944d}
 .scale input[value="3"]{border-color:#999}
@@ -60,25 +34,16 @@ button{
 .scale input[value="3"]:checked{color:#999}
 .scale input[value="4"]:checked{color:#4da6ff}
 .scale input[value="5"]:checked{color:#2b4eff}
-
-/* ===== HASIL ===== */
 .hasil-wrapper{display:flex;flex-direction:column;align-items:center}
-#pdfArea{
-  width:100%;max-width:210mm;
-  background:#fff;padding:20px
-}
+#pdfArea{width:100%;max-width:210mm;background:#fff;padding:20px}
 canvas{max-width:100%;margin:20px auto;display:block}
 .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px}
-
-@media(max-width:700px){
-  .question{flex-direction:column}
-}
+@media(max-width:700px){.question{flex-direction:column}}
 </style>
 </head>
 
 <body>
 
-<!-- ===== AKSES ===== -->
 <div class="container" id="halamanAkses">
   <div class="card center">
     <div class="logo-wrap"><img src="logo2.png"></div>
@@ -89,12 +54,10 @@ canvas{max-width:100%;margin:20px auto;display:block}
   </div>
 </div>
 
-<!-- ===== TES ===== -->
 <div class="container" id="halamanTes" style="display:none">
   <div class="logo-wrap"><img src="logo2.png"></div>
   <h2 class="center">Tes Minat & Bakat RIASEC</h2>
   <p class="center"><b>Nama:</b> <span id="namaView"></span></p>
-
   <div class="card">
     <b>Keterangan Skala:</b>
     <ul>
@@ -105,29 +68,39 @@ canvas{max-width:100%;margin:20px auto;display:block}
       <li>5 = Sangat Sesuai</li>
     </ul>
   </div>
-
   <div id="quiz"></div>
-
   <div class="card center">
     <button onclick="hitung()">Lihat Hasil</button>
   </div>
 </div>
 
-<!-- ===== HASIL ===== -->
 <div class="container" id="halamanHasil" style="display:none"></div>
 
 <script>
 let namaPeserta="Peserta";
-const kodeBenar="neutronmurangan";
 
-function cekAkses(){
+/* ===== HASH AKSES===== */
+const HASH_BENAR =
+"522d1eb5b5465b74e191da4a6229690fac02f200e648793f7920019260ae6497";
+
+async function sha256(text){
+  const data=new TextEncoder().encode(text);
+  const hash=await crypto.subtle.digest("SHA-256",data);
+  return [...new Uint8Array(hash)]
+    .map(b=>b.toString(16).padStart(2,"0"))
+    .join("");
+}
+
+async function cekAkses(){
   if(namaInput.value===""){alert("Nama wajib diisi");return}
-  if(kodeInput.value!==kodeBenar){alert("Kode salah");return}
+  const hashInput=await sha256(kodeInput.value);
+  if(hashInput!==HASH_BENAR){alert("Kode salah");return}
   namaPeserta=namaInput.value;
   namaView.innerText=namaPeserta;
   halamanAkses.style.display="none";
   halamanTes.style.display="block";
 }
+
 
 /* ===== DATA ===== */
 const questions = {
